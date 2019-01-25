@@ -6,23 +6,38 @@ import './App.css';
 class Book extends Component {
   
   constructor(props){
-    super(props);  
-    //this.state ={bookstatus: props.book.status}  
+    super(props);         
   }
 
+  onhandleChange = (bookshelf) => {
+ 
+   if (this.props.onhandleChange) {
+      this.props.onhandleChange(this.props.bookId, bookshelf);
+   }
+  }    
    
   render() {
 
-    return (<li>
+    const {singlebook, shelf, bookId} = this.props;
+
+    var divStyle = {
+      width: 128,
+      backgroundImage: 'url(' + singlebook.imageLinks.thumbnail + ')',
+      height: 193      
+    };
+
+
+    return (
+            <li key={bookId}>
               <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")' }}></div>
-                  <BookStatus />
+                  <div className="book-cover" style={divStyle}></div>
+                  <BookStatus shelf={shelf} onhandleChange={this.onhandleChange}/>
                 </div>
-                <div className="book-title">To Kill a Mockingbird</div>
-                <div className="book-authors">Harper Lee</div>
+                <div className="book-title">{singlebook.title}</div>
+                <div className="book-authors">{singlebook.authors}</div>
               </div>
-            </li>                         
+            </li>                                        
     		)
   }
 }

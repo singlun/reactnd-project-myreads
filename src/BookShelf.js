@@ -9,14 +9,18 @@ class BookShelf extends Component {
     super(props);    
   }
 
+  onhandleChange = (key, bookshelf) => {
+ 
+    if (this.props.onhandleChange) {
+      this.props.onhandleChange(key, bookshelf)
+    }
+  } 
    
   render() {
-
-    return (<div className="list-books-content">
-                <div>
-                    <BookList />                    
-                </div>
-            </div>)
+    const {books,shelf,shelfName} = this.props;
+    return (
+            <BookList onhandleChange={this.onhandleChange}  books={books} shelf={shelf} shelfName={shelfName}/>
+           )
   }
 }
 

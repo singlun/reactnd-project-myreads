@@ -8,16 +8,27 @@ class BookStatus extends Component {
     super(props);    
   }
 
-   
+  onhandleChange = (e) => {
+    e.preventDefault()
+
+    if (this.props.onhandleChange) {
+      this.props.onhandleChange(e.target.value)
+    }
+  }
+  
+
   render() {
+
+    const {shelf} = this.props;
+
     return (<div className="book-shelf-changer">
-                <select>
-                  <option value="move" disabled>Move to...</option>
-                  <option value="currentlyReading">Currently Reading</option>
-                  <option value="wantToRead">Want to Read</option>
-                  <option value="read">Read</option>
-                  <option value="none">None</option>
-                </select>
+                    <select value={shelf} onChange={this.onhandleChange}>
+                      <option value="move" disabled>Move to...</option>
+                      <option value="currentlyReading">Currently Reading</option>
+                      <option value="wantToRead">Want to Read</option>
+                      <option value="read">Read</option>
+                      <option value="none">None</option>
+                    </select>
             </div>            
     		)
   }
