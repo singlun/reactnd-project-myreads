@@ -8,8 +8,11 @@ class BookStatus extends Component {
     super(props);    
   }
 
-  onhandleChange = (e) => {
+  onhandleChange = (e, title) => {
+
     e.preventDefault()
+
+     alert('Book ' + title + ' has been set to ' + e.target.value)
 
     if (this.props.onhandleChange) {
       this.props.onhandleChange(e.target.value)
@@ -19,10 +22,10 @@ class BookStatus extends Component {
 
   render() {
 
-    const {shelf} = this.props;
+    const {shelf, title} = this.props;
 
     return (<div className="book-shelf-changer">
-                    <select value={shelf} onChange={this.onhandleChange}>
+                    <select value={shelf} onChange={(e) => this.onhandleChange(e, title)}>
                       <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>

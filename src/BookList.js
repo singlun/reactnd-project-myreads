@@ -10,6 +10,8 @@ class BookList extends Component {
     super(props);    
   }
 
+      /*Proptypes For data type and function Error handling.
+  */
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelf: PropTypes.string.isRequired, 

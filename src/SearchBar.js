@@ -18,6 +18,8 @@ class SearchBar extends Component {
     }
   }  
   
+      /*Proptypes For data type and function Error handling.
+  */
   static propTypes = {
     searchResults: PropTypes.array.isRequired,
     onhandleSearch: PropTypes.func.isRequired,

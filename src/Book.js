@@ -10,6 +10,8 @@ class Book extends Component {
     super(props);         
   }
 
+    /*Proptypes For data type and function Error handling.
+  */
   static propTypes = {
     singlebook: PropTypes.object.isRequired,
     shelf: PropTypes.string.isRequired, 
@@ -31,6 +33,8 @@ class Book extends Component {
 
     let urlLink;
     
+  /*This statement checks the thumbnail links for the book to avoid "undefined" error. 
+  */
     if (typeof singlebook.imageLinks === "undefined") {
       urlLink = "";
     }
@@ -50,7 +54,7 @@ class Book extends Component {
               <div className="book">
                 <div className="book-top">
                   <div className="book-cover" style={divStyle}></div>
-                  <BookStatus shelf={shelf} onhandleChange={this.onhandleChange}/>
+                  <BookStatus title={singlebook.title} shelf={shelf} onhandleChange={this.onhandleChange}/>
                 </div>
                 <div className="book-title">{singlebook.title}</div>
                 <div className="book-authors">{singlebook.authors}</div>

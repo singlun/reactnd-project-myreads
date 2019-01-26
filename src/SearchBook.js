@@ -16,6 +16,8 @@ class SearchBook extends Component {
     this.overAllResult = [];    
   }
 
+      /*Proptypes For data type and function Error handling.
+  */
   static propTypes = {
     books: PropTypes.array.isRequired,
     onhandleAddNew: PropTypes.func.isRequired
@@ -39,7 +41,9 @@ class SearchBook extends Component {
       });  
   };
 
-
+  /*This function fetches the data from the Book Api provided by UDACITY. Search results will then compared with the local 
+    Books records and updates the search results if not the same. 
+  */
   searchBooks = (query) => {
     BooksAPI.search(query)
     .then((searchResults) => {     

@@ -16,13 +16,16 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books : [],
-    shelf : ['currentlyReading','read','wantToRead', 'none'],
-    shelfLongName : ['Currently Reading','Read','Want To Read', 'Not On Shelf']
+    shelf : ['currentlyReading','read','wantToRead'],
+    shelfLongName : ['Currently Reading','Read','Want To Read']
   }
 
   componentDidMount(){
 
     if(sessionStorage.getItem('dataFetch') === null) {
+
+      /*Fetch Data from Books API Provided by Udacity. Please Note: Data Only Fetches One Time For each Sessions.*/
+
       BooksAPI.getAll()
         .then((books) => {
             this.setState(() => ({
@@ -30,13 +33,16 @@ class BooksApp extends React.Component {
             }))
             return books;
         }).then((books) => {
+          /*Clone the Books Record For Data Manupulation.*/
           this.cloneBooks = this.cloneBooks();
+          /*Data Stored in Session Variables So Data Persists even if The browser Refreshes.*/
           sessionStorage.setItem('localBooks',JSON.stringify(books));
           sessionStorage.setItem('localCloneBooks',JSON.stringify(this.cloneBooks));
           sessionStorage.setItem('dataFetch',true);
         }) 
       } 
       else {
+        /*Retrieve Data From the Session Variables.*/
         let sessionBooks = sessionStorage.getItem('localBooks');   
         let sessionCloneBooks = sessionStorage.getItem('localCloneBooks'); 
         this.cloneBooks = JSON.parse(sessionCloneBooks);
@@ -44,6 +50,11 @@ class BooksApp extends React.Component {
       }
   }  
 
+
+  /*This Function updates the books record and renders the screen, mainly for 2 criterias
+    1. When User types in the key in the search box.
+    2. When the User chooses the book shelf for each book.
+  */
   handleSubmit = (key, shelf) => {
 
     this.cloneBooks = this.updateBookShelf(key, shelf);
@@ -55,7 +66,8 @@ class BooksApp extends React.Component {
       }); 
   }  
 
-
+  /*This Function adds new book from the search result to the book shelf.
+  */
   handleAddNew = (key, shelf, addedBook) => {
        
     const checkBook = this.cloneBooks.filter(cb => cb.id === key);
@@ -76,6 +88,8 @@ class BooksApp extends React.Component {
 
   }  
 
+  /*This Function updates the book shelf.
+  */
   updateBookShelf = (key, shelf) => {
       let tempBooks = [];
       tempBooks = this.cloneBooks.map(cb => {
@@ -87,6 +101,8 @@ class BooksApp extends React.Component {
       return tempBooks;
   }  
 
+    /*This Function clones the books record for data manupulation.
+  */
   cloneBooks = () => {
     let tempBooks = [];
     this.state.books.forEach (book => {
