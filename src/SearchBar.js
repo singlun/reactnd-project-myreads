@@ -51,7 +51,7 @@ class SearchBar extends Component {
                   <ol className="books-grid">
                       {searchResults.length > 0 && (                                          
                           searchResults.map((onebook) => {
-                              return  <Book bookId={onebook.id} onhandleChange={this.onhandleChange} singlebook={onebook} shelf={(typeof onebook.shelf ==="undefined") ? "move" : onebook.shelf}/>
+                              return  <Book bookId={onebook.id} onhandleChange={this.onhandleChange} singlebook={onebook} shelf={(typeof onebook.shelf ==="undefined") ? "none" : onebook.shelf}/>
                           })
                        )}                   
                   </ol>

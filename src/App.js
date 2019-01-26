@@ -17,27 +17,42 @@ class BooksApp extends React.Component {
      */
     books : [],
     shelf : ['currentlyReading','read','wantToRead', 'none'],
-    shelfLongName : ['Currently Reading','Read','Want To Read', 'None']
+    shelfLongName : ['Currently Reading','Read','Want To Read', 'Not On Shelf']
   }
 
   componentDidMount(){
-    BooksAPI.getAll()
-      .then((books) => {
-          this.setState(() => ({
-            books            
-          }))
-      }).then(() => {
-        this.cloneBooks = this.cloneBooks();
-      })  
+
+    if(sessionStorage.getItem('dataFetch') === null) {
+      BooksAPI.getAll()
+        .then((books) => {
+            this.setState(() => ({
+              books: books           
+            }))
+            return books;
+        }).then((books) => {
+          this.cloneBooks = this.cloneBooks();
+          sessionStorage.setItem('localBooks',JSON.stringify(books));
+          sessionStorage.setItem('localCloneBooks',JSON.stringify(this.cloneBooks));
+          sessionStorage.setItem('dataFetch',true);
+        }) 
+      } 
+      else {
+        let sessionBooks = sessionStorage.getItem('localBooks');   
+        let sessionCloneBooks = sessionStorage.getItem('localCloneBooks'); 
+        this.cloneBooks = JSON.parse(sessionCloneBooks);
+        this.setState({ books: JSON.parse(sessionBooks) });         
+      }
   }  
 
   handleSubmit = (key, shelf) => {
 
     this.cloneBooks = this.updateBookShelf(key, shelf);
-    
-    this.setState({
+
+    this.setState(({ 
       books: this.cloneBooks
-    })
+    	}), () => {      		           
+        sessionStorage.setItem('localBooks',JSON.stringify(this.cloneBooks));
+      }); 
   }  
 
 
@@ -52,10 +67,13 @@ class BooksApp extends React.Component {
     else {
       this.cloneBooks = this.updateBookShelf(key, shelf);
     }
-
-    this.setState({
+    
+    this.setState(({ 
       books: this.cloneBooks
-    })    
+    	}), () => {      		           
+        sessionStorage.setItem('localBooks',JSON.stringify(this.cloneBooks));
+      }); 
+
   }  
 
   updateBookShelf = (key, shelf) => {
@@ -78,8 +96,8 @@ class BooksApp extends React.Component {
     return tempBooks;
   }
 
-  render() {
-    console.log(JSON.stringify(this.state));
+  render() {    
+
     return (      
       <div className="app">
           <Route exact path='/' render={() => (

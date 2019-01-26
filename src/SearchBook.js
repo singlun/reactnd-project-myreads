@@ -31,7 +31,7 @@ class SearchBook extends Component {
 
   onhandleSearch = (event) => { 
     event.preventDefault();
-    if (event.target.value.length === 0) return; 
+
     this.setState(({ 
       query: event.target.value
     	}), () => {      		           
@@ -42,8 +42,8 @@ class SearchBook extends Component {
 
   searchBooks = (query) => {
     BooksAPI.search(query)
-    .then((searchResults) => {
-      this.overAllResult= searchResults;
+    .then((searchResults) => {     
+      (typeof searchResults === "undefined") ? this.overAllResult = [] : this.overAllResult = searchResults;
       for (let i=0; i < this.overAllResult.length; i++){
             this.props.books.forEach((book)=>{
                 if (book.id === this.overAllResult[i].id){
