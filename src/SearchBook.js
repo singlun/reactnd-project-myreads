@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types';
 import './App.css';
 
 
@@ -12,8 +13,13 @@ class SearchBook extends Component {
         query: '',
         needFetch: true
     }; 
-    this.overAllResult = {};    
+    this.overAllResult = [];    
   }
+
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onhandleAddNew: PropTypes.func.isRequired
+  }  
 
   onhandleChange = (key, bookshelf) => {
       const addedBook = this.addBookShelf(key, bookshelf)
@@ -58,7 +64,7 @@ class SearchBook extends Component {
 
   render() {
     return ( 
-      		<SearchBar searchResults={this.overAllResult} showSearchPage={this.state.showSearchPage} onhandleSearch={this.onhandleSearch} onhandleChange={this.onhandleChange}/>
+      		<SearchBar searchResults={this.overAllResult} onhandleSearch={this.onhandleSearch} onhandleChange={this.onhandleChange}/>
     		)
   }
 }

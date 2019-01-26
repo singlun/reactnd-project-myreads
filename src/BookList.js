@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import PropTypes from 'prop-types';
 import './App.css';
 
 
@@ -9,10 +10,17 @@ class BookList extends Component {
     super(props);    
   }
 
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    shelf: PropTypes.string.isRequired, 
+    shelfName: PropTypes.string.isRequired, 
+    onhandleChange: PropTypes.func.isRequired
+  }  
+
   onhandleChange = (key, bookshelf) => {
  
     if (this.props.onhandleChange) {
-      this.props.onhandleChange(key, bookshelf)
+      this.props.onhandleChange(key, bookshelf);
     }
   }      
    

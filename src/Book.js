@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import BookStatus from './BookStatus';
+import PropTypes from 'prop-types';
 import './App.css';
 
 
@@ -8,6 +9,13 @@ class Book extends Component {
   constructor(props){
     super(props);         
   }
+
+  static propTypes = {
+    singlebook: PropTypes.object.isRequired,
+    shelf: PropTypes.string.isRequired, 
+    bookId: PropTypes.string.isRequired,  
+    onhandleChange: PropTypes.func.isRequired 
+  }    
 
   onhandleChange = (bookshelf) => {
  
@@ -21,9 +29,18 @@ class Book extends Component {
 
     const {singlebook, shelf, bookId} = this.props;
 
+    let urlLink;
+    
+    if (typeof singlebook.imageLinks === "undefined") {
+      urlLink = "";
+    }
+    else {
+      urlLink = (singlebook.imageLinks.thumbnail === null) ? "" : singlebook.imageLinks.thumbnail;
+    }
+
     var divStyle = {
       width: 128,
-      backgroundImage: 'url(' + singlebook.imageLinks.thumbnail + ')',
+      backgroundImage: 'url(' + urlLink + ')',
       height: 193      
     };
 

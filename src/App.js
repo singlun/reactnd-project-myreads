@@ -48,8 +48,6 @@ class BooksApp extends React.Component {
     if (checkBook.length === 0){      
       if (addedBook.length === 1) 
               this.cloneBooks = [...this.cloneBooks, addedBook[0]];
-
-
     }
     else {
       this.cloneBooks = this.updateBookShelf(key, shelf);
@@ -81,7 +79,7 @@ class BooksApp extends React.Component {
   }
 
   render() {
-       
+    console.log(JSON.stringify(this.state));
     return (      
       <div className="app">
           <Route exact path='/' render={() => (

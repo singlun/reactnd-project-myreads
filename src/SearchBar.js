@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Book from './Book';
+import PropTypes from 'prop-types';
 import './App.css';
 
 
@@ -15,7 +16,13 @@ class SearchBar extends Component {
     if (this.props.onhandleChange) {
       this.props.onhandleChange(key, bookshelf)
     }
-  }   
+  }  
+  
+  static propTypes = {
+    searchResults: PropTypes.array.isRequired,
+    onhandleSearch: PropTypes.func.isRequired,
+    onhandleChange: PropTypes.func.isRequired
+  }    
 
    
   render() {
@@ -28,7 +35,6 @@ class SearchBar extends Component {
                   <Link to='/' className='close-search'>
                       Close                
                   </Link>
-                  {/* <button className="close-search" onClick={() => this.setState({ showSearchPage: this.props.showSearchPage })}>Close</button> */}
                   <div className="search-books-input-wrapper">
                     {/*
                       NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -45,7 +51,7 @@ class SearchBar extends Component {
                   <ol className="books-grid">
                       {searchResults.length > 0 && (                                          
                           searchResults.map((onebook) => {
-                              return  <Book bookId={onebook.id} onhandleChange={this.onhandleChange} singlebook={onebook} shelf={onebook.shelf}/>
+                              return  <Book bookId={onebook.id} onhandleChange={this.onhandleChange} singlebook={onebook} shelf={(typeof onebook.shelf ==="undefined") ? "move" : onebook.shelf}/>
                           })
                        )}                   
                   </ol>
