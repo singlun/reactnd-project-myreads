@@ -16,6 +16,7 @@ class Book extends Component {
    }
   }    
    
+
   render() {
 
     const {singlebook, shelf, bookId} = this.props;

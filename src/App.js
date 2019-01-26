@@ -1,9 +1,10 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
 import BookList from './BookList';
 import SearchBook from './SearchBook';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
+import { Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   
@@ -16,8 +17,7 @@ class BooksApp extends React.Component {
      */
     books : [],
     shelf : ['currentlyReading','read','wantToRead', 'none'],
-    shelfLongName : ['Currently Reading','Read','Want To Read', 'None'],
-    showSearchPage: false
+    shelfLongName : ['Currently Reading','Read','Want To Read', 'None']
   }
 
   componentDidMount(){
@@ -26,23 +26,49 @@ class BooksApp extends React.Component {
           this.setState(() => ({
             books            
           }))
-      })   
+      }).then(() => {
+        this.cloneBooks = this.cloneBooks();
+      })  
   }  
 
-  handleSubmit = (key, shelf) => {  
+  handleSubmit = (key, shelf) => {
 
-    let cloneBooks = this.cloneBooks();
-
-    cloneBooks = cloneBooks.map(cb => {
-                    if (cb.id === key) {
-                      cb.shelf = shelf;                      
-                    }
-                    return cb;
-                  });
+    this.cloneBooks = this.updateBookShelf(key, shelf);
     
     this.setState({
-      books: cloneBooks
+      books: this.cloneBooks
     })
+  }  
+
+
+  handleAddNew = (key, shelf, addedBook) => {
+       
+    const checkBook = this.cloneBooks.filter(cb => cb.id === key);
+
+    if (checkBook.length === 0){      
+      if (addedBook.length === 1) 
+              this.cloneBooks = [...this.cloneBooks, addedBook[0]];
+
+
+    }
+    else {
+      this.cloneBooks = this.updateBookShelf(key, shelf);
+    }
+
+    this.setState({
+      books: this.cloneBooks
+    })    
+  }  
+
+  updateBookShelf = (key, shelf) => {
+      let tempBooks = [];
+      tempBooks = this.cloneBooks.map(cb => {
+        if (cb.id === key) {
+          cb.shelf = shelf;                      
+        }
+        return cb;
+      });  
+      return tempBooks;
   }  
 
   cloneBooks = () => {
@@ -53,32 +79,34 @@ class BooksApp extends React.Component {
     })
     return tempBooks;
   }
-  
 
-  render() {    
-
-    return (
+  render() {
+       
+    return (      
       <div className="app">
-          {this.state.showSearchPage === true && (
-             <SearchBook books={this.state.books}/>
-          )}
-          {this.state.showSearchPage === false && (
-              <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  {this.state.shelf.map((shelf, index) => (
-                    <BookList onhandleChange={this.handleSubmit} books={this.state.books} shelf={shelf} shelfName={this.state.shelfLongName[index]}/>
-                  ))} 
-                </div>
-              </div>
-              <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-              </div>
-            </div>             
-          )}
+          <Route exact path='/' render={() => (
+                  <div className="list-books">
+                  <div className="list-books-title">
+                    <h1>MyReads</h1>
+                  </div>
+                  <div className="list-books-content">
+                    <div>
+                      {this.state.shelf.map((shelf, index) => (
+                        <BookList onhandleChange={this.handleSubmit} books={this.state.books} shelf={shelf} shelfName={this.state.shelfLongName[index]}/>
+                      ))} 
+                    </div>
+                  </div>
+                  <div>
+                    <Link
+                        to='/searchBook'
+                        className='open-search'
+                    >Add a book</Link>                    
+                  </div>
+                </div> 
+          )} />  
+          <Route path='/searchBook' render={() => (
+                <SearchBook onhandleAddNew={this.handleAddNew}  books={this.state.books}/>
+          )} />   
       </div>
     )
   }
